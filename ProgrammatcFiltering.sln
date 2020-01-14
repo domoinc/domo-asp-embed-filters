@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProgrammaticFiltering", "ProgrammaticFiltering.csproj", "{6C83938E-43E8-4CE3-8164-33740FDE84E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C83938E-43E8-4CE3-8164-33740FDE84E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C83938E-43E8-4CE3-8164-33740FDE84E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C83938E-43E8-4CE3-8164-33740FDE84E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C83938E-43E8-4CE3-8164-33740FDE84E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3F7E66D-5C38-4A39-96C7-6E52F5942BB9}
+	EndGlobalSection
+EndGlobal
