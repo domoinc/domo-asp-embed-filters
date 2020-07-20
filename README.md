@@ -11,8 +11,8 @@
 
 ### Setup
 
-1. Download the source code
-2. Open up the solution file in Visual Studio
+1. Download the source code.
+2. Open up the solution file in Visual Studio named ProgrammaticFiltering.sln.
 3. Edit the ProgrammaticFilteringService.cs file and replace the following items:
   * CLIENT_ID with your client id
   * CLIENT_SECRET with your client secret
