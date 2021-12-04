@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-ContactManager-89C27F51-1427-4F4A-BCB3-7AB8F67AC457</UserSecretsId>
   </PropertyGroup>
 
