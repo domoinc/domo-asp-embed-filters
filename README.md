@@ -4,6 +4,7 @@
 
 # AspNetCore - Private Embed for dashboards with Programmatic Filtering Example Code
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://www.opensource.org/licenses/MIT)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdomoinc%2Fdomo-asp-embed-filters.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdomoinc%2Fdomo-asp-embed-filters?ref=badge_shield)
 
 ### About
 
@@ -27,3 +28,7 @@ The EMBED_ID represents the public or private identifier for the dashboard.
 The CLIENT_ID and CLIENT_SECRET is used to create the access token which will be used to then create an embed token for use with the private embed.
 For more information about creating the CLIENT_ID and CLIENT_SECRET see https://developer.domo.com/docs/authentication/overview-4.
    
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdomoinc%2Fdomo-asp-embed-filters.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdomoinc%2Fdomo-asp-embed-filters?ref=badge_large)
