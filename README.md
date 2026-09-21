@@ -9,8 +9,9 @@
 
 * Example AspNetCore server demonstrating private embed for dashboards with programmatic filtering
 
-This sample is configured for **dashboard** (page) embed out of the box. It can also be
-pointed at a **card** embed — see [Embedding a card instead of a dashboard](#embedding-a-card-instead-of-a-dashboard).
+This sample is configured for **dashboard** embed out of the box. It can also be pointed at a
+**card** or an **App Studio app** — see
+[Embedding something other than a dashboard](#embedding-something-other-than-a-dashboard).
 
 ### Setup
 
@@ -30,16 +31,25 @@ The EMBED_ID represents the public or private identifier for the dashboard.
 The CLIENT_ID and CLIENT_SECRET is used to create the access token which will be used to then create an embed token for use with the private embed.
 For more information about creating the CLIENT_ID and CLIENT_SECRET see https://developer.domo.com/docs/authentication/overview-4.
 
-### Embedding a card instead of a dashboard
+### Embedding something other than a dashboard
 
 The endpoints live in `Constants.cs`. Two values decide what gets embedded, and they must
 agree with the kind of content `EMBED_ID` points at:
 
-| Content | `EmbedTokenUrl` | `EmbedUrl` |
+| Surface | `EmbedTokenUrl` | `EmbedUrl` |
 |---|---|---|
-| Dashboard / page (this sample's default) | `EmbedTokenUrlDashboard` | `EmbedUrlDashboard` |
+| Dashboard (this sample's default) | `EmbedTokenUrlDashboard` | `EmbedUrlDashboard` |
 | **Card — v2 (recommended)** | `EmbedTokenUrlCard` | `EmbedUrlCardV2` |
 | Card — v1 (legacy) | `EmbedTokenUrlCard` | `EmbedUrlCardV1` |
+| App Studio app | `EmbedTokenUrlDashboard` | `EmbedUrlAppStudio` |
+
+**"Dashboard" and "page" are the same surface**, which is why there is one pair of dashboard
+constants rather than two. The render URL says `pages` for historical reasons only.
+
+**An App Studio app is not a dashboard.** It is a distinct surface with its own app shell,
+its own page tabs, and its own backend controller, so it has its own render URL — but it
+uses the dashboard token endpoint, because the token endpoint does not select the surface
+(see below).
 
 To embed a card, change both active lines at the bottom of `Constants.cs` together:
 
@@ -70,7 +80,8 @@ Notes that apply to both versions:
   type from the embed id itself, so `EmbedTokenUrlCard` is correct for v1 and v2 alike —
   only `EmbedUrl` differs. (`/v1/dashboards/embed/auth` is likewise an alias for
   `/v1/stories/embed/auth`; "stories" is legacy terminology.)
-* **Dashboard embed has no v1/v2 split.** `EmbedUrlDashboard` is already current.
+* **Only cards have a v1/v2 split.** Dashboard and App Studio embeds are already served by
+  the current-generation backend — the same one behind card v2.
 * The **JS API silently does nothing unless embed authorized domains are configured** for
   your instance. Add `?debug-js-api` to the embed URL to log why it did not initialise.
 

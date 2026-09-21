@@ -3,9 +3,10 @@
     /// <summary>
     /// Domo endpoints used by this sample.
     ///
-    /// This sample embeds <b>dashboards</b> (also called pages). The card constants
-    /// below are provided so the same flow can be pointed at a card embed instead —
-    /// see the "Embedding a card instead of a dashboard" section of the README.
+    /// This sample embeds <b>dashboards</b> (a dashboard and a page are the same
+    /// surface, hence one set of constants). The card and App Studio constants below
+    /// are provided so the same flow can be pointed at those surfaces instead — see
+    /// the "Embedding something other than a dashboard" section of the README.
     /// </summary>
     public class Constants
     {
@@ -35,9 +36,16 @@
         // Render URLs — the form in Chart1/Chart2 POSTs the embed token here
         // ------------------------------------------------------------------
 
-        // Dashboard / page embed. There is no v1/v2 split for dashboards; this is
-        // already served by the current-generation embed backend.
+        // Dashboard embed. "Dashboard" and "page" are the same surface -- the URL
+        // says `pages` for historical reasons only, so there is one constant, not
+        // two. There is no v1/v2 split here; this is already served by the
+        // current-generation embed backend.
         public static readonly string EmbedUrlDashboard = EmbedHost + "/embed/pages/";
+
+        // App Studio app embed. A genuinely different surface from a dashboard:
+        // its own app shell, its own page tabs, and its own backend controller.
+        // Not a dashboard with extra chrome.
+        public static readonly string EmbedUrlAppStudio = EmbedHost + "/embed/app-studio/";
 
         // Card embed v2 — the default choice for cards. Served by the same backend
         // as dashboard embed, so it supports more card types (Notebook/Text in
@@ -59,6 +67,11 @@
         //
         //     EmbedTokenUrl = EmbedTokenUrlCard;
         //     EmbedUrl      = EmbedUrlCardV2;
+        //
+        // For an App Studio app, keep the dashboard token endpoint and swap only
+        // the render URL (the token endpoint does not select the surface):
+        //
+        //     EmbedUrl      = EmbedUrlAppStudio;
         //
         // Mismatching these (for example a dashboard token endpoint with a card
         // render URL, or an EMBED_ID that names a card while these point at a
