@@ -33,41 +33,41 @@ For more information about creating the CLIENT_ID and CLIENT_SECRET see https://
 
 ### Embedding something other than a dashboard
 
-The endpoints live in `Constants.cs`. Two values decide what gets embedded, and they must
-agree with the kind of content `EMBED_ID` points at:
+The endpoints live in `Constants.cs`. Two values decide what gets embedded:
 
 | Surface | `EmbedTokenUrl` | `EmbedUrl` |
 |---|---|---|
-| Dashboard (this sample's default) | `EmbedTokenUrlDashboard` | `EmbedUrlDashboard` |
-| **Card — v2 (recommended)** | `EmbedTokenUrlCard` | `EmbedUrlCardV2` |
+| Dashboard (this sample's default) | `EmbedTokenUrlDashboard` | `EmbedUrlEntities` |
+| **Card — v2 (recommended)** | `EmbedTokenUrlCard` | `EmbedUrlEntities` |
+| App Studio app | `EmbedTokenUrlDashboard` | `EmbedUrlEntities` |
 | Card — v1 (legacy) | `EmbedTokenUrlCard` | `EmbedUrlCardV1` |
-| App Studio app | `EmbedTokenUrlDashboard` | `EmbedUrlAppStudio` |
 
-**"Dashboard" and "page" are the same surface**, which is why there is one pair of dashboard
-constants rather than two. The render URL says `pages` for historical reasons only.
+**One render URL covers everything except card v1.** The path does not select the surface —
+the embed id does. `EmbedUrlEntities` (`/embed/entities/`) is handled by an endpoint that
+looks up the id and renders whatever it points at, so the same URL serves dashboards, cards
+and App Studio apps. To embed a card v2 or an App Studio app you only need to switch
+`EmbedTokenUrl` to match the published docs for that surface; `EmbedUrl` stays as it is.
 
-**An App Studio app is not a dashboard.** It is a distinct surface with its own app shell
-and its own page tabs. It uses the dashboard token endpoint, because the token endpoint does
-not select the surface (see below). Note also that when you copy an embed URL for an App
-Studio app out of Domo, you will get an `/embed/pages/` URL rather than `/embed/app-studio/`
-— both reach the same content.
+`/embed/pages/`, `/embed/cards/`, `/embed/dashboards/` and `/embed/app-studio/` are aliases
+of the same endpoint and all still work. They are what Domo's own embed dialog currently hands
+out, so use one of those if you want this sample to match the URL you see in the product —
+note that an App Studio app is handed out under `/embed/pages/`, not `/embed/app-studio/`,
+which illustrates why the path is not a reliable indicator of the surface.
 
-**The path does not select the surface; the embed id does.** The `/embed/...` render URLs
-above are handled by the same endpoint, which looks up the embed id and renders whatever that
-id points at. That is why an App Studio app works under `/embed/pages/`, and why using the
-"wrong" one of these paths for a given id still renders correctly. The practical consequence
-is that a 404 almost always means the `EMBED_ID` is wrong or the content is not shared with
-the client user — not that the path is wrong.
-
-To embed a card, change both active lines at the bottom of `Constants.cs` together:
+**Card v1 is the one genuine exception** and keeps `/cards/`. It is a different renderer, not
+an alias, so it cannot be served from `/embed/entities/` — that path always renders the
+current card experience:
 
 ```csharp
 public static readonly string EmbedTokenUrl = EmbedTokenUrlCard;
-public static readonly string EmbedUrl      = EmbedUrlCardV2;
+public static readonly string EmbedUrl      = EmbedUrlCardV1;
 ```
 
-A **404 inside the iframe** is the usual symptom of these not matching — for example
-leaving the dashboard defaults in place while `EMBED_ID` names a card.
+**"Dashboard" and "page" are the same surface**, which is why there is one pair of dashboard
+constants rather than two.
+
+A **404 inside the iframe** now almost always means `EMBED_ID` names something unexpected, or
+the content is not shared with the client user — not that the path is wrong.
 
 #### Card embed v1 vs v2
 

@@ -33,51 +33,43 @@
         public static readonly string EmbedTokenUrlCard = ApiHost + "/v1/cards/embed/auth";
 
         // ------------------------------------------------------------------
-        // Render URLs — the form in Chart1/Chart2 POSTs the embed token here
+        // Render URLs -- the form in Chart1/Chart2 POSTs the embed token here
         // ------------------------------------------------------------------
 
-        // Dashboard embed. "Dashboard" and "page" are the same surface -- the URL
-        // says `pages` for historical reasons only, so there is one constant, not
-        // two. There is no v1/v2 split here; this is already served by the
-        // current-generation embed backend.
-        public static readonly string EmbedUrlDashboard = EmbedHost + "/embed/pages/";
+        // Every surface except card embed v1 is served by a single endpoint that
+        // resolves the entity type from the embed id, so dashboards, cards (v2)
+        // and App Studio apps all share one render URL. The /embed/pages/,
+        // /embed/cards/, /embed/dashboards/ and /embed/app-studio/ paths are
+        // aliases of this same endpoint and are what Domo's own embed dialog
+        // currently hands out; they continue to work if you prefer to match it.
+        public static readonly string EmbedUrlEntities = EmbedHost + "/embed/entities/";
 
-        // App Studio app embed. A genuinely different surface from a dashboard:
-        // its own app shell, its own page tabs, and its own backend controller.
-        // Not a dashboard with extra chrome.
-        public static readonly string EmbedUrlAppStudio = EmbedHost + "/embed/app-studio/";
-
-        // Card embed v2 — the default choice for cards. Served by the same backend
-        // as dashboard embed, so it supports more card types (Notebook/Text in
-        // addition to chart and DomoApp) and the full JS API, including
-        // /v1/onAppData, /v1/onAppReady and /v1/appData/apply.
-        public static readonly string EmbedUrlCardV2 = EmbedHost + "/embed/cards/";
-
-        // Card embed v1 — legacy. Served by the older renderer: chart and DomoApp
-        // cards only, and the JS API is limited to /v1/onDrill,
-        // /v1/onFiltersChange, /v1/onFrameSizeChange and /v1/filters/apply.
-        // Prefer EmbedUrlCardV2 for new integrations.
+        // Card embed v1 -- legacy, and the one surface that genuinely needs its own
+        // path. It is a different renderer, handling chart and DomoApp cards only,
+        // with a JS API limited to /v1/onDrill, /v1/onFiltersChange,
+        // /v1/onFrameSizeChange and /v1/filters/apply. It cannot be served from
+        // /embed/entities/, which always renders the current card experience.
         public static readonly string EmbedUrlCardV1 = EmbedHost + "/cards/";
 
         // ------------------------------------------------------------------
         // Active configuration used by Chart1 / Chart2.
         //
-        // This sample embeds dashboards. To embed a card instead, change BOTH
-        // lines together — use EmbedUrlCardV2 unless you specifically need v1:
+        // This sample embeds dashboards. EmbedUrlEntities already serves cards
+        // (v2) and App Studio apps too, so to embed one of those you only need to
+        // switch the token endpoint to match the published docs for that surface:
         //
         //     EmbedTokenUrl = EmbedTokenUrlCard;
-        //     EmbedUrl      = EmbedUrlCardV2;
         //
-        // For an App Studio app, keep the dashboard token endpoint and swap only
-        // the render URL (the token endpoint does not select the surface):
+        // Card embed v1 is the exception -- it needs its own render URL:
         //
-        //     EmbedUrl      = EmbedUrlAppStudio;
+        //     EmbedTokenUrl = EmbedTokenUrlCard;
+        //     EmbedUrl      = EmbedUrlCardV1;
         //
         // Mismatching these (for example a dashboard token endpoint with a card
         // render URL, or an EMBED_ID that names a card while these point at a
         // dashboard) is what produces a 404 inside the iframe.
         // ------------------------------------------------------------------
         public static readonly string EmbedTokenUrl = EmbedTokenUrlDashboard;
-        public static readonly string EmbedUrl = EmbedUrlDashboard;
+        public static readonly string EmbedUrl = EmbedUrlEntities;
     }
 }
