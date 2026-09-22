@@ -4,9 +4,17 @@
     Layout = null;
 }
 
-<form id="form" action="@Model.url" method="post">
-    <input type="hidden" name="embedToken" value="@Model.embedToken" />
-</form>
-<script>
-    document.getElementById("form").submit();
-</script>
+@if (!string.IsNullOrEmpty(Model.error))
+{
+    @* Razor HTML-encodes this, so the response body in the message is safe to show. *@
+    <pre style="margin: 0; padding: 12px; white-space: pre-wrap; word-break: break-word; font: 13px/1.6 Consolas, Menlo, monospace; color: #b00020;">@Model.error</pre>
+}
+else
+{
+    <form id="form" action="@Model.url" method="post">
+        <input type="hidden" name="embedToken" value="@Model.embedToken" />
+    </form>
+    <script>
+        document.getElementById("form").submit();
+    </script>
+}

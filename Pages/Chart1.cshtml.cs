@@ -19,6 +19,12 @@ namespace ProgrammaticFiltering.Pages
         public string url;
         public string embedToken;
 
+        /// <summary>
+        /// Set when token creation fails. The view renders this instead of submitting the
+        /// form, so configuration problems are visible rather than showing a blank iframe.
+        /// </summary>
+        public string error;
+
         public Chart1Model(
             ApplicationDbContext context,
             IAuthorizationService authorizationService,
@@ -36,8 +42,15 @@ namespace ProgrammaticFiltering.Pages
             url = Constants.EmbedUrl + programmaticFilter.EmbedId;
             var domoHttpClient = new DomoHttpClient();
 
-            var accessToken = await domoHttpClient.GetAccessTokenAsync(programmaticFilter.ClientId, programmaticFilter.ClientSecret);
-            embedToken = await domoHttpClient.GetEmbedToken(accessToken, programmaticFilter.EmbedId, programmaticFilter.Filter);
+            try
+            {
+                var accessToken = await domoHttpClient.GetAccessTokenAsync(programmaticFilter.ClientId, programmaticFilter.ClientSecret);
+                embedToken = await domoHttpClient.GetEmbedToken(accessToken, programmaticFilter.EmbedId, programmaticFilter.Filter);
+            }
+            catch (DomoEmbedException e)
+            {
+                error = e.Message;
+            }
         }
     }
 }
